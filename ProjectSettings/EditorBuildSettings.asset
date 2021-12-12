@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Personagem.unity
     guid: 8bcf3ac8eed45464eb53e6618c2de297
+  - enabled: 1
+    path: "Assets/Scenes/Cen\xE1rio.unity"
+    guid: 7d261f53c79806b4e860cf8073602351
   m_configObjects: {}

@@ -20,4 +20,8 @@ public class SceneChanger : MonoBehaviour
     public void Scene4() {
         SceneManager.LoadScene("Personagem");
     }
+
+    public void Scene5() {
+        SceneManager.LoadScene("Cenário");
+    }
 }
