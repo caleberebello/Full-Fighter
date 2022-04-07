@@ -1,88 +1,120 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Users;
 
 public class CursorDetection : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerInput playerInput;
+    [SerializeField]
+    private RectTransform cursorTransform;
+    [SerializeField]
+    private Canvas canvas;
+    [SerializeField]
+    private RectTransform canvasRectTransform;
+    [SerializeField]
+    private float cursorSpeed = 1000f;
+    [SerializeField]
+    private float padding = 40f;
 
-    private GraphicRaycaster gr;
-    private PointerEventData pointerEventData = new PointerEventData(null);
-    public Transform currentCharacter;
-    public Transform token;
-    public bool hasToken;
-    // Start is called before the first frame update
-    void Start()
+    private bool previousMouseState;
+    private Mouse virtualMouse;
+    private Mouse currentMouse;
+    private Camera mainCamera;
+
+    private string previousControlScheme = "";
+    private const string gamepadScheme = "Gamepad";
+    private const string mouseScheme = "Mouse&Teclado";
+
+    private void OnEnable()
     {
-        gr = GetComponentInParent<GraphicRaycaster>();
+        mainCamera = Camera.main;
+        currentMouse = Mouse.current;
+
+        if(virtualMouse == null)
+        {
+            virtualMouse = (Mouse) InputSystem.AddDevice("VirtualMouse");
+        }
+        else if (!virtualMouse.added)
+        {
+            InputSystem.AddDevice(virtualMouse);
+        }
+
+        InputUser.PerformPairingWithDevice(virtualMouse, playerInput.user);
+
+        if(cursorTransform != null)
+        {
+            Vector2 position = cursorTransform.anchoredPosition;
+            InputState.Change(virtualMouse.position, position);
+        }
+
+        InputSystem.onAfterUpdate += UpdateMotion;
+        playerInput.onControlsChanged += onControlsChanged;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-
-        //CONFIRM
-        if (Input.GetButtonDown("Fire1"))
-        {
-            if (currentCharacter != null)
-            {
-                TokenFollow(false);
-            }
-        }
-
-        //CANCEL
-        if (Input.GetButtonDown("Fire2"))
-        {
-            TokenFollow(true);
-        }
-
-        if (hasToken)
-        {
-            token.position = transform.position;
-        }
-
-        pointerEventData.position = Camera.main.WorldToScreenPoint(transform.position);
-        List<RaycastResult> results = new List<RaycastResult>();
-        gr.Raycast(pointerEventData, results);
-
-
-        if(hasToken)
-        {
-            if (results.Count > 0)
-            {
-                Transform raycastCharacter = results[0].gameObject.transform;
-                if (raycastCharacter != currentCharacter)
-                {
-                    if (currentCharacter != null)
-                    {
-                        currentCharacter.Find("selectedBorder").GetComponent<Image>().color = Color.clear;
-                    }
-                    SetCurrentCharacter(raycastCharacter);
-                }
-            }
-        }
-        
-        else {
-            if (currentCharacter != null)
-            {
-                currentCharacter.Find("selectedBorder").GetComponent<Image>().color = Color.clear;
-                SetCurrentCharacter(null);
-            }
-        }
+        InputSystem.RemoveDevice(virtualMouse);
+        InputSystem.onAfterUpdate -= UpdateMotion;
+        playerInput.onControlsChanged -= onControlsChanged;
     }
 
-    void SetCurrentCharacter(Transform t)
+    private void UpdateMotion()
     {
-        currentCharacter = t;
-        if(t != null)
+        if(virtualMouse == null || Gamepad.current == null)
         {
-            t.Find("selectedBorder").GetComponent<Image>().color = Color.white;
+            return;
         }
+
+        Vector2 deltaValue = Gamepad.current.leftStick.ReadValue();
+        deltaValue *= cursorSpeed * Time.deltaTime;
+
+        Vector2 currentPosition = virtualMouse.position.ReadValue();
+        Vector2 newPosition = currentPosition + deltaValue;
+
+        newPosition.x = Mathf.Clamp(newPosition.x, padding, Screen.width - padding);
+        newPosition.y = Mathf.Clamp(newPosition.x, padding, Screen.height - padding);
+
+        InputState.Change(virtualMouse.position, newPosition);
+        InputState.Change(virtualMouse.delta, deltaValue);
+
+        bool aButtonIsPressed = Gamepad.current.aButton.IsPressed();
+        if(previousMouseState != aButtonIsPressed)
+        {
+            virtualMouse.CopyState<MouseState>(out var mouseState);
+            mouseState.WithButton(MouseButton.Left, aButtonIsPressed);
+            InputState.Change(virtualMouse, mouseState);
+            previousMouseState = aButtonIsPressed;
+        }
+
+        AnchorCursor(newPosition);
     }
 
-    void TokenFollow (bool trigger)
+    private void AnchorCursor(Vector2 position)
     {
-        hasToken = trigger;
+        Vector2 anchoredPosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, position, canvas.renderMode
+            == RenderMode.ScreenSpaceOverlay ? null : mainCamera, out anchoredPosition);
+        cursorTransform.anchoredPosition = anchoredPosition;
+    }
+
+    private void onControlsChanged(PlayerInput input)
+    {
+        if(playerInput.currentControlScheme == mouseScheme && previousControlScheme != mouseScheme)
+        {
+            cursorTransform.gameObject.SetActive(false);
+            Cursor.visible = true;
+            currentMouse.WarpCursorPosition(virtualMouse.position.ReadValue());
+            previousControlScheme = mouseScheme;
+        }
+        else if(playerInput.currentControlScheme == gamepadScheme && previousControlScheme != gamepadScheme)
+        {
+            cursorTransform.gameObject.SetActive(true);
+            Cursor.visible = false;
+            InputState.Change(virtualMouse.position, currentMouse.position.ReadValue());
+            AnchorCursor(currentMouse.position.ReadValue());
+            previousControlScheme = gamepadScheme;
+        }
     }
 }

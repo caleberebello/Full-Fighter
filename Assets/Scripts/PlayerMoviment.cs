@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerMoviment : MonoBehaviour
 {
-
     public CharacterController2D controller;
     public Animator animator;
     public float runSpeed = 40f;
@@ -21,6 +20,7 @@ public class PlayerMoviment : MonoBehaviour
 
         if (Input.GetButtonDown("Jump")) {
             jump = true;
+            animator.SetBool("IsJumping",true);
         }
 
         if (Input.GetButtonDown("Crouch")) {
@@ -28,6 +28,10 @@ public class PlayerMoviment : MonoBehaviour
         } else if (Input.GetButtonUp("Crouch")) {
             crouch = false;
         }
+    }
+
+    public void OnLanding() {
+        animator.SetBool("IsJumping", false);
     }
 
     void FixedUpdate(){

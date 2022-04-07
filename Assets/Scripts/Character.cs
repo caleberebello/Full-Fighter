@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using UnityEditor.Animations;
 
 [System.Serializable]
-[CreateAssetMenu(fileName = "New Character", menuName = "Character")]
-public class Character: ScriptableObject {
+public class Character {
     public string characterName;
     public Sprite characterSprite;
-    public float zoom = 1;
+    public AnimatorController characterAnimator;
 }
