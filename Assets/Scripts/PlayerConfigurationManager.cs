@@ -34,9 +34,9 @@ public class PlayerConfigurationManager : MonoBehaviour
         return playerConfigs;
     }
 
-    public void SetPlayerSprite(int index, Sprite sprite)
+    public void SetPlayerAnimator(int index, RuntimeAnimatorController animator)
     {
-        playerConfigs[index].PlayerSprite = sprite;
+        playerConfigs[index].PlayerAnimator = animator;
     }
 
     public void ReadyPlayer(int index) 
@@ -69,5 +69,5 @@ public class PlayerConfigurationManager : MonoBehaviour
     public PlayerInput Input { get; set; }
     public int PlayerIndex { get; set; }
     public bool isReady { get; set; }
-    public Sprite PlayerSprite { get; set; }
+    public RuntimeAnimatorController PlayerAnimator { get; set; }
 }

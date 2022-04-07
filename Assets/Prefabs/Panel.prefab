@@ -123,11 +123,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1658036412399251267}
         m_TargetAssemblyTypeName: PlayerSetupMenuController, Assembly-CSharp
-        m_MethodName: SetColor
+        m_MethodName: SetAnimator
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 21300000, guid: 0320571bd96604e478bfeac555aea2f0, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Sprite, UnityEngine
+          m_ObjectArgument: {fileID: 9100000, guid: 1bf7bbbcf84f73a4faa68ef87ddfa925, type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.RuntimeAnimatorController,
+            UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -518,11 +519,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1658036412399251267}
         m_TargetAssemblyTypeName: PlayerSetupMenuController, Assembly-CSharp
-        m_MethodName: SetColor
+        m_MethodName: SetAnimator
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 21300000, guid: 4233125d73d5e6a4bbcda38521216c1e, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Sprite, UnityEngine
+          m_ObjectArgument: {fileID: 9100000, guid: 8054dd035103651429b0f53e09cfce93, type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.RuntimeAnimatorController,
+            UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -865,11 +867,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1658036412399251267}
         m_TargetAssemblyTypeName: PlayerSetupMenuController, Assembly-CSharp
-        m_MethodName: SetColor
+        m_MethodName: SetAnimator
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 21300000, guid: 7889d823d3102a443b28a0d831bded95, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Sprite, UnityEngine
+          m_ObjectArgument: {fileID: 9100000, guid: 62aeb3f3bc7e7104b91af908503dfe1f, type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.RuntimeAnimatorController,
+            UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

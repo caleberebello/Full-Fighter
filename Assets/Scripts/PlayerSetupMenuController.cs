@@ -32,11 +32,11 @@ public class PlayerSetupMenuController : MonoBehaviour
         }
     }
 
-    public void SetColor(Sprite sprite)
+    public void SetAnimator(RuntimeAnimatorController animator)
     {
         if(!inputEnabled) { return; }
 
-        PlayerConfigurationManager.Instance.SetPlayerSprite(PlayerIndex, sprite);
+        PlayerConfigurationManager.Instance.SetPlayerAnimator(PlayerIndex, animator);
         readyPanel.SetActive(true);
         readyButton.Select();
         menuPanel.SetActive(false);
