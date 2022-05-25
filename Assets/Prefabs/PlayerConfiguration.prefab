@@ -364,6 +364,7 @@ GameObject:
   - component: {fileID: 3726928866442763985}
   - component: {fileID: 8455801600952094182}
   - component: {fileID: 3956914344295314763}
+  - component: {fileID: 4100911435538780261}
   m_Layer: 0
   m_Name: PlayerConfiguration
   m_TagString: Untagged
@@ -571,6 +572,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3726928866442763991}
+  winPanel: {fileID: 0}
+  playerPrefab: {fileID: 0}
   maxHealth: 100
   healthBar: {fileID: 5554592090057938125}
 --- !u!114 &8827882594337368974
@@ -674,6 +677,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 3726928866442763991}
+--- !u!114 &4100911435538780261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3726928866442763988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cb934506ddcc4545bb797fad4805891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 3726928866442763988}
+  defeatPanel: {fileID: 5788366072495002831, guid: 744ed65f968424b4387b7f440a8d2245, type: 3}
 --- !u!1 &4112972825771283763
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
 
     public Animator animator;
+
+    [SerializeField]
+    private GameObject winPanel;
+    [SerializeField]
+    private GameObject playerPrefab;
 
     public int maxHealth = 100;
     int currentHealth;
@@ -24,6 +30,8 @@ public class Enemy : MonoBehaviour
         animator.SetTrigger("Hurt");
         if (currentHealth <= 0) {
             Die();
+            winPanel.gameObject.SetActive(true);
+            playerPrefab.gameObject.SetActive(false);
         }
         healthBar.SetHealth(currentHealth);
     }
